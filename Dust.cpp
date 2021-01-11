@@ -13,7 +13,8 @@
 
 Dust::Renderer renderer;
 std::vector<Dust::Particle> particles;
-Dust::Physics physics = Dust::Physics(1000);
+const uint32_t universeSize = 1000;
+Dust::Physics physics = Dust::Physics(universeSize);
 int update(){
 
     return renderer.draw();

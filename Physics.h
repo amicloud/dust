@@ -23,9 +23,15 @@ public:
 
     Field() = default;
 
-    Field(Field &field) {
-        memcpy(&lines, field.lines, sizeof field)
-        lines = field.lines;
+    Field(const Field &field) {
+//        memcpy(&lines, field.lines, sizeof field)
+//        lines = field.lines;
+        for (uint32_t i = 0; i < field.lines.size(); i++) {
+            this->lines.push_back(new WorldLine{});
+            for (uint32_t j = 0; j < field.lines.size(); j++) {
+                this->lines.at(i)->vectors.push_back(new Vec4(*field.lines.at(i)->vectors.at(j)));
+            }
+        }
     };
 
     void propagateMagnitudes(){
