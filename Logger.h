@@ -11,7 +11,9 @@ namespace Logger {
         std::cout << "DEBUG: " << x << std::endl;
     };
 
-     void err(uint32_t err);
+     void err(uint32_t err) {
+        std::cout << "Open GL error: " << err << std::endl;
+    }
 }
 
 #endif //DUST_LOGGER_H
