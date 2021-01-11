@@ -20,23 +20,21 @@
 #include <vector>
 #include <iostream>
 #include "Particle.h"
+#include "Constants.h"
 
 namespace Dust {
     class Renderer {
     private:
-        uint16_t view_x, view_y;
-        const char *window_title;
-        std::vector<Particle>* particles;
         GLFWwindow *window;
     public:
-        Renderer() = default;
-        Renderer(uint16_t x, uint16_t y, const char* win_title, std::vector<Particle>* particles) : view_x(x), view_y(y), window_title(win_title), particles(particles) {
+
+        Renderer(){
             /* Initialize the glfw library */
             if (!glfwInit()) {
                 std::cerr << "GLFW init failed." << std::endl;
             }
             /* Create a windowed mode window and its OpenGL context */
-            window = glfwCreateWindow(view_x, view_y, window_title, NULL, NULL);
+            window = glfwCreateWindow(universeSize, universeSize, "Dust", NULL, NULL);
             if (!window) {
                 glfwTerminate();
                 std::cerr << "GLFW window create failed." << std::endl;
@@ -50,11 +48,11 @@ namespace Dust {
             }
         };
 
-        int render() {
-            std::vector<float> vertices;
-            for (auto particle : *particles) {
 
-            }
+        template<typename T>
+        int render(T data) {
+
+
             return 0;
         }
 

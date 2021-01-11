@@ -10,26 +10,26 @@
 #include <GLFW/glfw3.h>
 #include "catch.hpp"
 //using namespace Dust;
-
+#include "Constants.h"
 Dust::Renderer renderer;
 std::vector<Dust::Particle> particles;
-const uint32_t universeSize = 1000;
-Dust::Physics physics = Dust::Physics(universeSize);
+Dust::Physics physics;
 int update(){
 
     return renderer.draw();
 }
 
 int main() {
-
-    renderer = Dust::Renderer(600, 600, "Dust", &particles);
     Dust::Color oxygen_color = Dust::Color({1,1,.1,.1});
     Dust::Element element = Dust::Element("Oxygen", &oxygen_color, 1);
     Dust::Particle particle = Dust::Particle(0, 1, 2, element);
     particles.push_back(particle);
     Logger::log("Testing!");
     while (update()) {
-        physics.tick();
+        std::vector<Field> fields = physics.tick();
+        for(auto val : fields){
+
+        }
     }
     return 0;
 }
