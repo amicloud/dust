@@ -4,7 +4,7 @@
 
 #ifndef DUST_PHYSICS_H
 #define DUST_PHYSICS_H
-#define DEBUG
+//#define DEBUG
 #include "Constants.h"
 #include "catch.hpp"
 #include <chrono>
@@ -22,6 +22,7 @@ public:
     Field() = default;
 
     void propagateMagnitudes() {
+        maxMagnitude = 0;
         Field tempField;
         int m_uni_size = std::size(lines);
         int hmm = sizeof(*this);
@@ -197,7 +198,7 @@ namespace Dust {
 
         std::vector<Field> tick() {
             using namespace std::chrono;
-            gravity.print();
+//            gravity.print();
             auto start = std::chrono::high_resolution_clock::now();
             gravity.propagateMagnitudes();
             gravity.print();
@@ -213,11 +214,12 @@ namespace Dust {
     private:
 
         void initGravity() {
-//            for (uint32_t x = 0; x < universeSize; x++) {
-//                for (uint32_t y = 0; y < universeSize; y++) {
-//                    gravity.lines[x)->vectors.push_back(new Vec4{x, y, 0, 0});
-//                }
-//            }
+            for (uint32_t x = 0; x < universeSize; x++) {
+                for (uint32_t y = 0; y < universeSize; y++) {
+                    gravity.lines[x].vectors[y].x = x;
+                    gravity.lines[x].vectors[y].y = y;
+                }
+            }
             gravity.lines[5].vectors[5].magnitude = 5000;
             gravity.lines[2].vectors[2].magnitude = 5000;
             gravity.lines[9].vectors[9].magnitude = 5000;

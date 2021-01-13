@@ -14,10 +14,6 @@
 Dust::Renderer renderer;
 std::vector<Dust::Particle> particles;
 Dust::Physics physics;
-int update(){
-
-    return renderer.draw();
-}
 
 int main() {
     Dust::Color oxygen_color = Dust::Color({1,1,.1,.1});
@@ -25,11 +21,16 @@ int main() {
     Dust::Particle particle = Dust::Particle(0, 1, 2, element);
     particles.push_back(particle);
     Logger::log("Testing!");
-    while (update()) {
+    while (renderer.rendering) {
         std::vector<Field> fields = physics.tick();
-        for(auto val : fields){
-
+        for(auto field : fields){
+            for(auto line : field.lines){
+                for(auto vector : line.vectors){
+                    renderer.renderQueue.push_back(vec4ToRenderable(vector, field.maxMagnitude));
+                }
+            }
         }
+        renderer.draw();
     }
     return 0;
 }

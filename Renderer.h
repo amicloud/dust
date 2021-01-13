@@ -27,8 +27,10 @@ namespace Dust {
     private:
         GLFWwindow *window;
     public:
-
+        bool rendering = true;
+        std::vector<Renderable> renderQueue;
         Renderer(){
+
             /* Initialize the glfw library */
             if (!glfwInit()) {
                 std::cerr << "GLFW init failed." << std::endl;
@@ -49,9 +51,7 @@ namespace Dust {
         };
 
 
-        template<typename T>
-        int render(T data) {
-
+        int renderPoints() {
 
             return 0;
         }
@@ -64,10 +64,7 @@ namespace Dust {
             if (!glfwWindowShouldClose(window)) {
                 /* Render here */
                 glClear(GL_COLOR_BUFFER_BIT);
-                glBegin(GL_TRIANGLES);
-                glVertex2f(-.05f, -0.5f);
-                glVertex2f(0.0f, 0.5f);
-                glVertex2f(0.5f, -0.5f);
+                renderPoints();
 
                 /* Swap front and back buffers */
                 glfwSwapBuffers(window);
@@ -76,6 +73,7 @@ namespace Dust {
                 glfwPollEvents();
             } else {
                 terminate();
+                rendering = false;
                 return 0;
             }
 
