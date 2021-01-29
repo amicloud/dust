@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="_Scope" pattern="file[dust]:*/&amp;&amp;!file[dust]:dependencies//*" />
+</component>

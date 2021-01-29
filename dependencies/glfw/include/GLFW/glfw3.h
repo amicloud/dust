@@ -882,9 +882,9 @@ extern "C" {
  *  Framebuffer bit depth [hint](@ref GLFW_ACCUM_ALPHA_BITS).
  */
 #define GLFW_ACCUM_ALPHA_BITS       0x0002100A
-/*! @brief Framebuffer auxiliary buffer hint.
+/*! @brief Framebuffer auxiliary backgroundBuffer hint.
  *
- *  Framebuffer auxiliary buffer [hint](@ref GLFW_AUX_BUFFERS).
+ *  Framebuffer auxiliary backgroundBuffer [hint](@ref GLFW_AUX_BUFFERS).
  */
 #define GLFW_AUX_BUFFERS            0x0002100B
 /*! @brief OpenGL stereoscopic rendering hint.
@@ -2247,7 +2247,7 @@ GLFWAPI GLFWmonitorfun glfwSetMonitorCallback(GLFWmonitorfun callback);
 /*! @brief Returns the available video modes for the specified monitor.
  *
  *  This function returns an array of all video modes supported by the specified
- *  monitor.  The returned array is sorted in ascending order, first by color
+ *  monitor.  The returned array is sorted in ascending order, first by colorCharge
  *  bit depth (the sum of all channel depths) and then by resolution area (the
  *  product of width and height).
  *
