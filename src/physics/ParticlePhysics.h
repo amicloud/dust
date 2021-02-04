@@ -2,8 +2,8 @@
 // Created by Amy on 1/23/2021.
 //
 #pragma once
-#ifndef DUST_PARTICLESYSTEM_H
-#define DUST_PARTICLESYSTEM_H
+#ifndef DUST_PARTICLEPHYSICS_H
+#define DUST_PARTICLEPHYSICS_H
 
 #include <utility>
 #include <vector>
@@ -11,7 +11,7 @@
 #include "Logger.h"
 
 namespace Dust {
-    class ParticleSystem {
+    class ParticlePhysics {
         struct ParticleInfo {
             Vec2<double> position;
             Flavor flavor;
@@ -23,7 +23,7 @@ namespace Dust {
         std::vector<Particle *> tempParticles = {};
         std::vector<ParticleInfo> particlesToAdd = {};
         double maxSpeed = 1.0;
-//        explicit ParticleSystem(){
+//        explicit ParticlePhysics(){
 //
 //        }
 
@@ -32,7 +32,6 @@ namespace Dust {
 //            Color colorCharge;
         };
 
-        double flatPacked[universeSizeY * universeSizeX];
         std::vector<ParticleForRender> forRender;
         std::vector<ParticleForRender> forRenderTemp;
 
@@ -60,32 +59,33 @@ namespace Dust {
 
                 for (auto other: tempParticles) {
                     if (particle->UUID == other->UUID) {
-
                         continue;
                     }
                     double distance = particle->distanceFrom(other->position);
-                    auto vec = ((particle->position) - (other->position));
-                    double distanceInDimensions = pow(distance, dimensions - 1);
-                    double inverseDistance = 1/distanceInDimensions;
+                    auto vec = particle->position - other->position;
+                    double distanceInDimensionsMinusOne = pow(distance, dimensions - 1);
+                    double inverseDistanceMinus = 1 / distanceInDimensionsMinusOne;
+                    double distanceInDimensionsPlusOne = pow(distance, dimensions + 1);
+                    double inverseDistancePlus = 1 / distanceInDimensionsPlusOne;
+                    double relativeVelocity = (particle->velocity - other->velocity).magnitude();
+//                    Logger::debug(relativeVelocity);
                     vec.normalize();
-                    if ((distance <= 5)) {// && (distance > .25)) {
-                        if (distance <= 1) {
-                            if (distance == 0) continue;
-                            particle->impartForce(
-                                    vec * -1 * strongInteraction *
-                                    ((int) (particle->colorCharge * (other->colorCharge)) * inverseDistance));
-                        } else {
-                            particle->impartForce(
-                                    vec * -1 * strongInteraction *
-                                    ((int) (particle->colorCharge * (other->colorCharge)) * distanceInDimensions));
-                        }
+                    if (distance <= 1) {
+                        particle->impartForce(
+                                vec * (distance < 0.1 ? 1 : -1) * strongInteraction *
+                                ((int) (particle->colorCharge * (other->colorCharge)) * inverseDistanceMinus));
+                    } else {
+                        particle->impartForce(
+                                vec * -1 * strongInteraction *
+                                ((int) (particle->colorCharge * (other->colorCharge)) * inverseDistancePlus));
                     }
-
+                    if(distance < 1) continue;
                     particle->impartForce(vec * -1 * gravitationalConstant *
                                           (other->mass /
-                                                  distanceInDimensions));
-                    particle->impartForce(
-                            vec * fineStructureConstant * (particle->charge * other->charge) * inverseDistance);
+                                           distanceInDimensionsMinusOne));
+                    particle->impartForce(//(vec + (vec.perpendicular() * (particle->charge * other->charge) * (particle->velocity - other->velocity).magnitude()))
+                            ((vec + (particle->velocity.perpendicular() * (inverseDistanceMinus/relativeVelocity))) * (particle->charge * other->charge)) * fineStructureConstant * inverseDistanceMinus);
+//                    particle->impartForce((vec.perpendicular() * (particle->charge * other->charge) * relativeVelocity*1e3) * fineStructureConstant * inverseDistanceMinus);
 
 //                         particle->impartForce(
 //                                 vec  * weakInteraction * ((int)particle->colorCharge * (int)other->colorCharge / pow(distance, 3)));
@@ -114,5 +114,5 @@ namespace Dust {
     };
 }
 
-#endif //DUST_PARTICLESYSTEM_H
+#endif //DUST_PARTICLEPHYSICS_H
 

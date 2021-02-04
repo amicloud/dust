@@ -112,6 +112,18 @@ namespace Dust {
                     charge = ElectricCharge::ZERO;
                     colorCharge = ColorCharge::BLACK;
                     break;
+                case Flavor::PROTON:
+                    mass = 938.272*massUnit;
+                    spin = Spin::HALF;
+                    charge = ElectricCharge::ONE;
+                    colorCharge = ColorCharge::WHITE;
+                    break;
+                case Flavor::NEUTRON:
+                    mass = 939.565*massUnit;
+                    spin = Spin::HALF;
+                    charge = ElectricCharge::ZERO;
+                    colorCharge = ColorCharge::WHITE;
+                    break;
             }
             massInverse = 1/mass;
             flavor = _flavor;

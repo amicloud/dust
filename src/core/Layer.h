@@ -16,15 +16,16 @@ namespace Dust {
         virtual void onAttach() = 0;
         virtual void onUpdate() = 0;
         virtual void onDestroy() = 0;
+        virtual void onMouseEvent(){};
 //        explicit Layer(std::string _name){
 //             name = std::move(_name);
-//             uuid = generateUUID();
+//             uid = generateUID();
 //         };
         Layer() = default;
         virtual ~Layer() = default;
     protected:
         unsigned int getUUID(){
-            return uuid;
+            return uid;
         }
 
         std::string& getName(){
@@ -32,15 +33,15 @@ namespace Dust {
         }
 
         void onCreate(){
-            uuid = generateUUID();
+            uid = generateUID();
         }
 
     private:
-        unsigned int uuid{};
+        unsigned int uid{};
         std::string name;
-        static unsigned int generateUUID(){
+        static unsigned int generateUID(){
             if(!layers.empty()){
-                return layers.back().uuid + 1;
+                return layers.back().uid + 1;
             } else {
                 return 1;
             }

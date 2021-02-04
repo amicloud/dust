@@ -8,13 +8,13 @@
 #include <vector>
 #include <chrono>
 #include <thread>
-#include "ParticleSystem.h"
+#include "ParticlePhysics.h"
 
 namespace Dust {
     class SimplePhysics {
     public:
         inline static bool doingPhysics = true;
-        inline static Dust::ParticleSystem ParticleSystem;
+        inline static Dust::ParticlePhysics particlePhysics;
         explicit SimplePhysics() = default;
 
         static void startPhysics(){
@@ -23,13 +23,17 @@ namespace Dust {
         }
 
         static void PhysicsLoop(){
-            auto targetDeltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::microseconds(physicsTimeStep)); //in microseconds
-            std::chrono::time_point<std::chrono::steady_clock> lastTime;
+            auto targetDeltaTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::microseconds(physicsTimeStep)); //in microseconds
+            auto deltaTimeMargin = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::microseconds((int)(physicsTimeStep*0.50))); //in microseconds
+            std::chrono::time_point<std::chrono::steady_clock> lastTime = std::chrono::steady_clock::now();;
+            std::chrono::time_point<std::chrono::steady_clock> nextPoint;
             while(doingPhysics){
-                std::chrono::time_point<std::chrono::steady_clock> nextPoint = lastTime + targetDeltaTime;
-                if(std::chrono::steady_clock::now() >= nextPoint){
+                nextPoint = lastTime + targetDeltaTime;
+                auto now = std::chrono::steady_clock::now();
+                if(now >= nextPoint){
+                    if(now >= nextPoint + deltaTimeMargin) Logger::info( (now - (nextPoint+deltaTimeMargin)).count(), "Physics loop lagged by (ns)");
                     lastTime = std::chrono::steady_clock::now();
-                    ParticleSystem.particleInteractions();
+                    particlePhysics.particleInteractions();
                 }
             }
         }
@@ -37,6 +41,12 @@ namespace Dust {
         static void stopPhysics(){
             doingPhysics = false;
             thread.join();
+        }
+
+        static void clearParticles(){
+            stopPhysics();
+            particlePhysics.clearAll();
+            startPhysics();
         }
 
     private:

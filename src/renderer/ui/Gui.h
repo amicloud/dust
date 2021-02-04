@@ -54,43 +54,62 @@ namespace Dust {
                 }
             }
             if(ImGui::Button("Delete All")){
-                SimplePhysics::ParticleSystem.clearAll();
+                SimplePhysics::clearParticles();
             }
             if(ImGui::Button("Add UP R")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::RED});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::RED});
             }
             if(ImGui::Button("Add UP G")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::GREEN});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::GREEN});
             }
             if(ImGui::Button("Add UP B")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::BLUE});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::UP, ColorCharge::BLUE});
             }
             if(ImGui::Button("Add DOWN R")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::RED});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::RED});
             }
             if(ImGui::Button("Add DOWN G")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::GREEN});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::GREEN});
             }
             if(ImGui::Button("Add DOWN B")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::BLUE});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::DOWN, ColorCharge::BLUE});
             }
             if(ImGui::Button("Add UUD RGB")){
                 SimplePhysics::stopPhysics();
-                SimplePhysics::ParticleSystem.createParticle({{addPosX + triangleOffset, addPosY}, Flavor::UP, ColorCharge::RED});
-                SimplePhysics::ParticleSystem.createParticle({{addPosX - triangleOffset, addPosY}, Flavor::UP, ColorCharge::GREEN});
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY + triangleOffset}, Flavor::DOWN, ColorCharge::BLUE});
-//                SimplePhysics::ParticleSystem.createParticle({addPosX,addPosY}, Flavor::DOWN, ColorCharge::BLUE);
+                SimplePhysics::particlePhysics.createParticle({{addPosX + triangleOffset, addPosY}, Flavor::UP, ColorCharge::RED});
+                SimplePhysics::particlePhysics.createParticle({{addPosX - triangleOffset, addPosY}, Flavor::UP, ColorCharge::GREEN});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY + triangleOffset}, Flavor::DOWN, ColorCharge::BLUE});
+//                SimplePhysics::ParticlePhysics.createParticle({addPosX,addPosY}, Flavor::DOWN, ColorCharge::BLUE);
                 SimplePhysics::startPhysics();
             }
             if(ImGui::Button("Add UDD RGB")){
                 SimplePhysics::stopPhysics();
-                SimplePhysics::ParticleSystem.createParticle({{addPosX + triangleOffset, addPosY}, Flavor::UP, ColorCharge::RED});
-                SimplePhysics::ParticleSystem.createParticle({{addPosX - triangleOffset, addPosY}, Flavor::DOWN, ColorCharge::GREEN});
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY + triangleOffset}, Flavor::DOWN, ColorCharge::BLUE});
+                SimplePhysics::particlePhysics.createParticle({{addPosX + triangleOffset, addPosY}, Flavor::UP, ColorCharge::RED});
+                SimplePhysics::particlePhysics.createParticle({{addPosX - triangleOffset, addPosY}, Flavor::DOWN, ColorCharge::GREEN});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY + triangleOffset}, Flavor::DOWN, ColorCharge::BLUE});
                 SimplePhysics::startPhysics();
             }
             if(ImGui::Button("Add Electron")){
-                SimplePhysics::ParticleSystem.createParticle({{addPosX, addPosY}, Flavor::ELECTRON});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::ELECTRON});
+            }
+            if(ImGui::Button("Add Proton")){
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::PROTON});
+            }
+            if(ImGui::Button("Add Neutron")){
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::NEUTRON});
+            }
+            if(ImGui::Button("Add Hydrogen Molecule")){
+                SimplePhysics::stopPhysics();
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY}, Flavor::PROTON});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY + (triangleOffset * 10)}, Flavor::ELECTRON});
+                SimplePhysics::startPhysics();
+            }
+            if(ImGui::Button("Add Deuterium Molecule")){
+                SimplePhysics::stopPhysics();
+                SimplePhysics::particlePhysics.createParticle({{addPosX + triangleOffset, addPosY}, Flavor::NEUTRON});
+                SimplePhysics::particlePhysics.createParticle({{addPosX - triangleOffset, addPosY}, Flavor::PROTON});
+                SimplePhysics::particlePhysics.createParticle({{addPosX, addPosY + (triangleOffset * 10)}, Flavor::ELECTRON});
+                SimplePhysics::startPhysics();
             }
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                         ImGui::GetIO().Framerate);

@@ -30,8 +30,9 @@ add_executable(dust src/Dust.cpp src/Dust.h src/renderer/Renderer.cpp src/render
         ${imguiIncDir}/imgui.cpp ${imguiIncDir}/imgui.h ${imguiIncDir}/imgui_impl_glfw.cpp ${imguiIncDir}/imgui_impl_glfw.h
         ${imguiIncDir}/imgui_impl_opengl3.cpp ${imguiIncDir}/imgui_impl_opengl3.h ${imguiIncDir}/imgui_draw.cpp ${imguiIncDir}/imconfig.h
         ${imguiIncDir}/imstb_rectpack.h ${imguiIncDir}/imstb_textedit.h ${imguiIncDir}/imstb_truetype.h
-        ${imguiIncDir}/imgui_tables.cpp ${imguiIncDir}/imgui_widgets.cpp src/physics/SimplePhysics.cpp src/physics/SimplePhysics.h src/physics/ParticleSystem.cpp src/physics/ParticleSystem.h src/Input.cpp src/Input.h src/physics/Quark.cpp src/physics/Quark.h src/physics/Lepton.cpp src/physics/Lepton.h
-        src/renderer/ui/Gui.h src/renderer/ui/Gui.cpp src/core/Layer.h src/renderer/RenderLayer.cpp src/renderer/RenderLayer.h src/physics/Hadron.h src/physics/Hadron.cpp src/Constants.cpp)
+        ${imguiIncDir}/imgui_tables.cpp ${imguiIncDir}/imgui_widgets.cpp src/physics/SimplePhysics.cpp src/physics/SimplePhysics.h src/physics/ParticlePhysics.cpp src/physics/ParticlePhysics.h src/Input.cpp src/Input.h src/physics/Quark.cpp src/physics/Quark.h src/physics/Lepton.cpp src/physics/Lepton.h
+        src/renderer/ui/Gui.h src/renderer/ui/Gui.cpp src/core/Layer.h src/renderer/RenderLayer.cpp src/renderer/RenderLayer.h src/physics/Hadron.h src/physics/Hadron.cpp src/Constants.cpp
+        src/core/events/Event.h src/core/events/MouseEvent.cpp src/core/events/MouseEvent.h src/core/KeyCode.h)
 target_include_directories( dust PRIVATE glfwIncDir glewIncDir eigenIncDir imguiIncDir glmIncDir srcDir physicsDir rendererDir rendererDir coreDir eventsDir)
 target_link_libraries( dust PRIVATE ${glfwLib} ${glewLib} openGL32)
 set_property(TARGET dust PROPERTY VS_DEBUGGER_WORKING_DIRECTORY ".")

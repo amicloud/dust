@@ -29,7 +29,7 @@
 #include "Physics.h"
 #include "SimplePhysics.h"
 #include "Field.h"
-#include "ParticleSystem.h"
+#include "ParticlePhysics.h"
 #include "SimplePhysics.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -137,36 +137,20 @@ namespace Dust {
             fieldShader->unbind();
         }
 
-        void renderParticles() {
-            particleShader->bind();
-            int xScaleLocation = glGetUniformLocation(fieldShader->program, "u_xScale");
-            int yScaleLocation = glGetUniformLocation(fieldShader->program, "u_yScale");
-            int maxMagLocation = glGetUniformLocation(fieldShader->program, "u_maxMag");
-
-            glCall(glUniform1i(xScaleLocation, universeSizeX));
-            glCall(glUniform1i(yScaleLocation, universeSizeY));
-            glCall(glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(SimplePhysics::ParticleSystem.flatPacked),
-                            SimplePhysics::ParticleSystem.flatPacked));
-            glCall(glBindBuffer(GL_ARRAY_BUFFER, backgroundBuffer));
-            glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-            glCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-            particleShader->unbind();
-        }
-
         void renderParticlesNew(){
-            if(SimplePhysics::ParticleSystem.forRender.empty()) return;
+            if(SimplePhysics::particlePhysics.forRender.empty()) return;
 
             newParticleShader->bind();
             glCall(glBindBuffer(GL_ARRAY_BUFFER, particleBuffer));
-            glCall(glBufferData(GL_ARRAY_BUFFER, SimplePhysics::ParticleSystem.forRender.size() * sizeof(ParticleSystem::ParticleForRender), &SimplePhysics::ParticleSystem.forRender.front(), GL_DYNAMIC_DRAW));
+            glCall(glBufferData(GL_ARRAY_BUFFER, SimplePhysics::particlePhysics.forRender.size() * sizeof(ParticlePhysics::ParticleForRender), &SimplePhysics::particlePhysics.forRender.front(), GL_DYNAMIC_DRAW));
             glCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
             glCall(glEnableVertexAttribArray(0));
 
             int orthoLocation = glGetUniformLocation(backgroundShader->program, "ortho");
             glCall(glUniformMatrix4fv(orthoLocation, 1, false, glm::value_ptr(projectionMatrix)));
 
-            glCall(glDrawArrays(GL_POINTS, 0, SimplePhysics::ParticleSystem.forRender.size()));
-//            glCall(glDrawArrays(GL_TRIANGLES, 0, SimplePhysics::ParticleSystem.forRender.size()-1));
+            glCall(glDrawArrays(GL_POINTS, 0, SimplePhysics::particlePhysics.forRender.size()));
+//            glCall(glDrawArrays(GL_TRIANGLES, 0, SimplePhysics::ParticlePhysics.forRender.size()-1));
 
             newParticleShader->unbind();
         }
