@@ -154,10 +154,6 @@ struct Vec2 {
         return abs(x) + abs(y);
     }
 
-    Vec2<T> cross(Vec2<T> _other){
-
-    }
-
 };
 
 

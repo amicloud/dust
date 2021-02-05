@@ -19,18 +19,16 @@
 
 #include <vector>
 #include <iostream>
-#include "Particle.h"
+#include "physics/2d/Particle2D.h"
 #include "Constants.h"
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include "Shader.h"
-#include "Physics.h"
-#include "SimplePhysics.h"
-#include "Field.h"
-#include "ParticlePhysics.h"
-#include "SimplePhysics.h"
+#include "physics/2d/Physics2D.h"
+#include "physics/2d/ParticleSystem2D.h"
+#include "physics/2d/Physics2D.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include "ui/Gui.h"
@@ -93,7 +91,7 @@ namespace Dust {
             glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
             std::string fieldShaderFilepath = "../res/shaders/Field.glsl";
-            std::string particleShaderFilepath = "../res/shaders/Particle.glsl";
+            std::string particleShaderFilepath = "../res/shaders/Particle2D.glsl";
             std::string newParticleShaderFilepath = "../res/shaders/Particle2.glsl";
             std::string backgroundShaderFilepath = "../res/shaders/Background.glsl";
             fieldShader = new Shader(fieldShaderFilepath);
@@ -124,33 +122,20 @@ namespace Dust {
             glfwTerminate();
         }
 
-        void renderField() {
-            fieldShader->bind();
-            int xScaleLocation = glGetUniformLocation(fieldShader->program, "u_xScale");
-            int yScaleLocation = glGetUniformLocation(fieldShader->program, "u_yScale");
-            int maxMagLocation = glGetUniformLocation(fieldShader->program, "u_maxMag");
-            glCall(glUniform1d(maxMagLocation, fieldForRender->maxMagnitude));
-            glCall(glUniform1i(xScaleLocation, universeSizeX));
-            glCall(glUniform1i(yScaleLocation, universeSizeY));
-            glCall(glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(fieldForRender->flatPacked), &fieldForRender->flatPacked));
-            glCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-            fieldShader->unbind();
-        }
-
         void renderParticlesNew(){
-            if(SimplePhysics::particlePhysics.forRender.empty()) return;
+            if(Physics2D::particlePhysics.forRender.empty()) return;
 
             newParticleShader->bind();
             glCall(glBindBuffer(GL_ARRAY_BUFFER, particleBuffer));
-            glCall(glBufferData(GL_ARRAY_BUFFER, SimplePhysics::particlePhysics.forRender.size() * sizeof(ParticlePhysics::ParticleForRender), &SimplePhysics::particlePhysics.forRender.front(), GL_DYNAMIC_DRAW));
+            glCall(glBufferData(GL_ARRAY_BUFFER, Physics2D::particlePhysics.forRender.size() * sizeof(ParticleSystem2D::ParticleForRender), &Physics2D::particlePhysics.forRender.front(), GL_DYNAMIC_DRAW));
             glCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
             glCall(glEnableVertexAttribArray(0));
 
             int orthoLocation = glGetUniformLocation(backgroundShader->program, "ortho");
             glCall(glUniformMatrix4fv(orthoLocation, 1, false, glm::value_ptr(projectionMatrix)));
 
-            glCall(glDrawArrays(GL_POINTS, 0, SimplePhysics::particlePhysics.forRender.size()));
-//            glCall(glDrawArrays(GL_TRIANGLES, 0, SimplePhysics::ParticlePhysics.forRender.size()-1));
+            glCall(glDrawArrays(GL_POINTS, 0, Physics2D::particlePhysics.forRender.size()));
+//            glCall(glDrawArrays(GL_TRIANGLES, 0, Physics2D::ParticleSystem2D.forRender.size()-1));
 
             newParticleShader->unbind();
         }
@@ -206,9 +191,6 @@ namespace Dust {
             return 1;
         }
 
-        void submitField(Field &field) {
-            fieldForRender = &field;
-        }
 
     private:
         GLFWwindow *window;
@@ -216,7 +198,6 @@ namespace Dust {
         Shader *particleShader;
         Shader *backgroundShader;
         Shader *newParticleShader;
-        Field *fieldForRender{};
         std::vector<Vec2<float>> pointsForRender;
         float rectangle[8] = {-(float)universeSizeX/2, -(float)universeSizeY/2, (float)universeSizeX/2, -(float)universeSizeY/2,
                               (float)universeSizeX/2, (float)universeSizeY/2,  -(float)universeSizeX/2, (float)universeSizeY/2};

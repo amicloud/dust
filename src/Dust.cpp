@@ -5,14 +5,6 @@
 #define GLEW_STATIC 1
 
 #include "renderer/Renderer.h"
-//#include "Physics.h"
-//#include <GL/glew.h>
-//#include <GLFW/glfw3.h>
-#include "../dependencies/catch.hpp"
-//using namespace Dust;
-#include "physics/Field.h"
-#include "physics/SimplePhysics.h"
-#include <random>
 
 using namespace Dust;
 
@@ -22,14 +14,14 @@ int main() {
 
     Logger::debug("Testing!");
 
-    SimplePhysics::startPhysics();
+    Physics2D::startPhysics();
     while (renderer.rendering) {
         auto *timer = new Logger::Timer(false, "Render");
 
         renderer.draw();
         delete timer;
     }
-    SimplePhysics::stopPhysics();
+    Physics2D::stopPhysics();
     return 0;
 }
 

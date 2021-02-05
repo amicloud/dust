@@ -26,13 +26,13 @@ set(coreDir "src/core")
 set(eventsDir "src/events")
 #set(catchIncDir "${CMAKE_CURRENT_SOURCE_DIR}/dependencies/catch")
 include_directories(${glfwIncDir} ${glewIncDir} ${eigenIncDir} ${imguiIncDir} ${glmIncDir} ${srcDir} ${physicsDir} ${rendererDir} ${coreDir}  ${eventsDir} ${eventppIncDir})
-add_executable(dust src/Dust.cpp src/Dust.h src/renderer/Renderer.cpp src/renderer/Renderer.h src/physics/Physics.h src/Logger.h src/Logger.cpp src/Constants.h src/renderer/Shader.cpp src/renderer/Shader.h
+add_executable(dust src/Dust.cpp src/Dust.h src/renderer/Renderer.cpp src/renderer/Renderer.h src/Logger.h src/Logger.cpp src/Constants.h src/renderer/Shader.cpp src/renderer/Shader.h
         ${imguiIncDir}/imgui.cpp ${imguiIncDir}/imgui.h ${imguiIncDir}/imgui_impl_glfw.cpp ${imguiIncDir}/imgui_impl_glfw.h
         ${imguiIncDir}/imgui_impl_opengl3.cpp ${imguiIncDir}/imgui_impl_opengl3.h ${imguiIncDir}/imgui_draw.cpp ${imguiIncDir}/imconfig.h
         ${imguiIncDir}/imstb_rectpack.h ${imguiIncDir}/imstb_textedit.h ${imguiIncDir}/imstb_truetype.h
-        ${imguiIncDir}/imgui_tables.cpp ${imguiIncDir}/imgui_widgets.cpp src/physics/SimplePhysics.cpp src/physics/SimplePhysics.h src/physics/ParticlePhysics.cpp src/physics/ParticlePhysics.h src/Input.cpp src/Input.h src/physics/Quark.cpp src/physics/Quark.h src/physics/Lepton.cpp src/physics/Lepton.h
-        src/renderer/ui/Gui.h src/renderer/ui/Gui.cpp src/core/Layer.h src/renderer/RenderLayer.cpp src/renderer/RenderLayer.h src/physics/Hadron.h src/physics/Hadron.cpp src/Constants.cpp
-        src/core/events/Event.h src/core/events/MouseEvent.cpp src/core/events/MouseEvent.h src/core/KeyCode.h)
+        ${imguiIncDir}/imgui_tables.cpp ${imguiIncDir}/imgui_widgets.cpp src/physics/2d/Physics2D.cpp src/physics/2d/Physics2D.h src/physics/2d/ParticleSystem2D.cpp src/physics/2d/ParticleSystem2D.h src/Input.cpp src/Input.h
+        src/renderer/ui/Gui.h src/renderer/ui/Gui.cpp src/core/Layer.h src/renderer/RenderLayer.cpp src/renderer/RenderLayer.h 
+        src/core/events/Event.h src/core/events/MouseEvent.cpp src/core/events/MouseEvent.h src/core/KeyCode.h src/physics/3d/Physics3D.cpp src/physics/3d/Physics3D.h src/physics/3d/Particle3D.cpp src/physics/3d/Particle3D.h src/physics/3d/Vector3.h src/physics/3d/ParticleSystem3D.cpp src/physics/3d/ParticleSystem3D.h src/physics/3d/ParticleSystem3D.h src/physics/2d/Particle2D.cpp)
 target_include_directories( dust PRIVATE glfwIncDir glewIncDir eigenIncDir imguiIncDir glmIncDir srcDir physicsDir rendererDir rendererDir coreDir eventsDir)
 target_link_libraries( dust PRIVATE ${glfwLib} ${glewLib} openGL32)
 set_property(TARGET dust PROPERTY VS_DEBUGGER_WORKING_DIRECTORY ".")
